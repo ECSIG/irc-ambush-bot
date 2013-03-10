@@ -18,7 +18,7 @@ public class ConnectionEngine {
 
 	public static String settingsDir = ""; 
 	public static final String fileSeparator = System.getProperty("file.separator");
-	private String name = "", host = "", pass="", nick="", username="", realname="", encoding="";
+	private String name = "", host = "", pass="", nick="", username="", realname="", encoding="", channels="";
 	private int port;
 	private boolean ssl;
 	private boolean loadedConnection = false;
@@ -54,9 +54,9 @@ public class ConnectionEngine {
 	}
 
 	public static void beginSSLIRCConnection(String name, String host, int port, String pass, 
-			String nick, String username, String realname, String encoding) {
+			String nick, String username, String realname, String encoding, String channels) {
 		SSLIRCConnection sslc = new SSLIRCConnection(name, host, port, pass, nick, 
-				username, realname, encoding);
+				username, realname, encoding, channels);
 		connections.add(sslc);
 		sslc.addIRCEventListener(new IRCEventAdapter(sslc));
 		sslc.addTrustManager(new SSLDefaultTrustManager());
@@ -69,9 +69,9 @@ public class ConnectionEngine {
 	}
 
 	public static void beginIRCConnection(String name, String host, int port, String pass, String nick, 
-			String username, String realname, String encoding) {
+			String username, String realname, String encoding, String channels) {
 		IRCConnection irc = new IRCConnection(name, host, port, pass, nick, 
-				username, realname, encoding);
+				username, realname, encoding, channels);
 		connections.add(irc);
 		irc.addIRCEventListener(new IRCEventAdapter(irc));
 		try {
@@ -118,13 +118,15 @@ public class ConnectionEngine {
 				encoding = properties.getProperty("encoding", "");
 				port = Integer.parseInt(properties.getProperty("port"));
 				ssl = Boolean.parseBoolean(properties.getProperty("ssl"));
+				channels = properties.getProperty("channels","");
+				
 
 				if(ssl) {
 					beginSSLIRCConnection(name, host, port, pass, nick, 
-							username, realname, encoding);
+							username, realname, encoding, channels);
 				} else {
 					beginIRCConnection(name, host, port, pass, nick, 
-							username, realname, encoding);
+							username, realname, encoding, channels);
 				}
 				try {
 					Thread.sleep(4000);

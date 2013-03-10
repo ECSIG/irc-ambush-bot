@@ -33,9 +33,10 @@ public class IRCConnection extends Thread {
 	private ArrayList<User> users = new ArrayList<User>();
 	private ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<String>(10000);
 	private QueueProcessing qp = new QueueProcessing(this);
+	private String channels;
 
 	public IRCConnection(String name, String host, int port, String pass, String nick, 
-			String username, String realname, String encoding) {
+			String username, String realname, String encoding, String channels) {
 		new Thread(qp).start();
 		p = new Parser();
 		connectionName = name;
@@ -46,6 +47,7 @@ public class IRCConnection extends Thread {
 		this.username = username;
 		this.realname = realname;
 		this.encoding = encoding;
+		this.channels = channels;
 	}
 
 	public void addIRCEventListener(IRCEventListener listener) {
@@ -153,6 +155,13 @@ public class IRCConnection extends Thread {
 		} catch (Exception exc) {
 			exc.printStackTrace();
 			return false;
+		}
+	}
+	
+	public void joinChannels(){
+		String[] channelsToJoin = channels.split(",");
+		for(String s : channelsToJoin){
+			send("JOIN "+s);
 		}
 	}
 

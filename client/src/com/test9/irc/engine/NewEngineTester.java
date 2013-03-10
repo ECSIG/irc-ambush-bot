@@ -20,6 +20,7 @@ public class NewEngineTester {
 		        System.out.println("Shit gone down");
 		}
 		ConnectionEngine CE = new ConnectionEngine();
+		InputReader ir = new InputReader();
 
 	}
 }

@@ -1,10 +1,5 @@
 package com.test9.irc.engine;
 
-import java.awt.Color;
-
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-
 public class User {
 
 	private String nick;
@@ -17,62 +12,16 @@ public class User {
 	private boolean localOperator;
 	private boolean noticeReceipt;
 	private static int userID = 0;
-	private Color color;
-	private boolean init = false;
-	private SimpleAttributeSet userSimpleAttributeSet;
-
-	private static Color[] colors = {
-		new Color(0, 105, 105), new Color(105, 198, 252), new Color(252, 216, 105),
-		new Color(122, 105, 252), new Color(179, 252, 105), new Color(233, 105, 252), 
-		new Color(105, 252, 142), new Color(252, 105, 161), new Color(105, 252, 252), 
-		new Color(252, 159, 105), new Color(105, 142, 252), new Color(235, 252, 105), 
-		new Color(179, 105, 252), new Color(125, 252, 105), new Color(252, 105, 216), 
-		new Color(105, 252, 196)
-	};
-
-	private static SimpleAttributeSet[] attributes = new SimpleAttributeSet[colors.length];
 
 	User(String nick, boolean yourself) {
 		char prefix = nick.charAt(0);
-
-		if(!init )
-			initAttributes();
 
 		if((prefix >= 'A' && prefix <= 'Z') || (prefix >= 'a' && prefix <= 'z'))
 			this.nick = nick;
 		else
 			this.nick = nick.substring(1, nick.length());
 
-		setUserAttributeSet(userID, yourself);
 		userID++;
-	}
-
-	private void initAttributes() {
-		for(int i = 0; i < attributes.length; i++)
-		{
-			attributes[i] = new SimpleAttributeSet();
-			attributes[i].addAttribute(StyleConstants.Foreground, User.getColors()[i]);
-			attributes[i].addAttribute(StyleConstants.Bold, true);
-		}
-		init = true;
-
-	}
-
-	private void setUserAttributeSet(int index, boolean yourself) {
-		if(yourself)
-		{
-			userSimpleAttributeSet = new SimpleAttributeSet();
-			userSimpleAttributeSet.addAttribute(StyleConstants.Foreground, new Color(0x89bdff));
-			userSimpleAttributeSet.addAttribute(StyleConstants.Bold, true);
-		} else {
-			try {
-				userSimpleAttributeSet = attributes[index];
-			} catch (IndexOutOfBoundsException e) {
-				setUserAttributeSet(index-attributes.length, false);			
-			} catch (Exception e) {
-				System.err.println("Problem setting the user color.");
-			}
-		}
 	}
 
 	/**
@@ -115,34 +64,6 @@ public class User {
 	 */
 	public static void setUserID(int userID) {
 		User.userID = userID;
-	}
-
-	/**
-	 * @return the color
-	 */
-	public Color getColor() {
-		return color;
-	}
-
-	/**
-	 * @return the colors
-	 */
-	public static Color[] getColors() {
-		return colors;
-	}
-
-	/**
-	 * @return the attributes
-	 */
-	public SimpleAttributeSet[] getAttributes() {
-		return attributes;
-	}
-
-	/**
-	 * @return the userSimpleAttributeSet
-	 */
-	public SimpleAttributeSet getUserSimpleAttributeSet() {
-		return userSimpleAttributeSet;
 	}
 
 	/**
@@ -241,12 +162,5 @@ public class User {
 	 */
 	public void setNoticeReceipt(boolean noticeReceipt) {
 		this.noticeReceipt = noticeReceipt;
-	}
-
-	/**
-	 * @param userSimpleAttributeSet the userSimpleAttributeSet to set
-	 */
-	public void setUserSimpleAttributeSet(SimpleAttributeSet userSimpleAttributeSet) {
-		this.userSimpleAttributeSet = userSimpleAttributeSet;
 	}
 }
