@@ -133,9 +133,9 @@ public class ConnectionEngine {
 				}
 			}
 		}
-		if(!loadedConnection) {
-			new NewServerConfigWindow();
-		}
+//		if(!loadedConnection) {
+//			new NewServerConfigWindow();
+//		}
 	}
 	
 	/**
