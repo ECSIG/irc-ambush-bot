@@ -150,13 +150,13 @@ public class IRCEventAdapter implements IRCEventListener {
 		if(m.getContent().toLowerCase().contains("$"+connection.getNick())) {
 			String mess = m.getContent();
 			System.out.println("mess:"+mess);
-			if(mess.toLowerCase().contains(AMBUSH)) {
-				mess = mess.substring(mess.indexOf(AMBUSH)+AMBUSH.length(), mess.length());
-
+			if(mess.toLowerCase().contains(":")) {
+				mess = mess.substring(mess.indexOf(" ")+1, mess.length());
+				
 				String ambushNick = mess.substring(0,mess.indexOf(":")).trim();
 				System.out.println("ambushNick:"+ambushNick);
 
-				mess = mess.substring(mess.indexOf(":")+1, mess.length()).trim();
+				mess = mess.substring(mess.indexOf(":"), mess.length()).trim();
 
 				String ambushMess = mess;
 				System.out.println("ambush message:"+ambushMess.trim());
@@ -166,7 +166,7 @@ public class IRCEventAdapter implements IRCEventListener {
 				connection.send("PRIVMSG "+m.getParams()[0]+" The operation succeeded.");
 			} else if(mess.toLowerCase().contains("help")) {
 				System.out.println(m.getParams()[0]);
-				connection.send("PRIVMSG "+m.getParams()[0]+" Ambush syntax: ambush <nick> ':' <message>");
+				connection.send("PRIVMSG "+m.getParams()[0]+" Ambush syntax: <nick> ':' <message>");
 			} else if(mess.toLowerCase().contains(" join ")){
 				String joinChannel = mess.substring(mess.indexOf(" join ")+6, mess.length()).trim();
 				connection.send("JOIN "+joinChannel);
